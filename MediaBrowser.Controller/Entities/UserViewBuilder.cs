@@ -67,7 +67,8 @@ namespace MediaBrowser.Controller.Entities
                     return GetTvView(queryParent, user, query);
 
                 case CollectionType.movies:
-                    return GetMovieFolders(queryParent, user, query);
+                case CollectionType.homevideos:
+                    return GetMovieFolders(queryParent, user, query, viewType == CollectionType.homevideos);
 
                 case CollectionType.tvshowseries:
                     return GetTvSeries(queryParent, user, query);
@@ -131,7 +132,7 @@ namespace MediaBrowser.Controller.Entities
             return 50;
         }
 
-        private QueryResult<BaseItem> GetMovieFolders(Folder parent, User user, InternalItemsQuery query)
+        private QueryResult<BaseItem> GetMovieFolders(Folder parent, User user, InternalItemsQuery query, bool homeVideos)
         {
             if (query.Recursive)
             {
@@ -140,7 +141,9 @@ namespace MediaBrowser.Controller.Entities
 
                 if (query.IncludeItemTypes.Length == 0)
                 {
-                    query.IncludeItemTypes = new[] { BaseItemKind.Movie };
+                    query.IncludeItemTypes = homeVideos
+                        ? new[] { BaseItemKind.Video, BaseItemKind.Photo }
+                        : new[] { BaseItemKind.Movie };
                 }
 
                 return parent.QueryRecursive(query);
@@ -150,7 +153,9 @@ namespace MediaBrowser.Controller.Entities
             {
                 GetUserView(CollectionType.movieresume, "HeaderContinueWatching", "0", parent),
                 GetUserView(CollectionType.movielatest, "Latest", "1", parent),
-                GetUserView(CollectionType.moviemovies, "Movies", "2", parent),
+                homeVideos
+                    ? GetUserView(CollectionType.moviemovies, "HomeVideos", "2", parent)
+                    : GetUserView(CollectionType.moviemovies, "Movies", "2", parent),
                 GetUserView(CollectionType.moviecollection, "Collections", "3", parent),
                 GetUserView(CollectionType.moviefavorites, "Favorites", "4", parent),
                 GetUserView(CollectionType.moviegenres, "Genres", "5", parent)

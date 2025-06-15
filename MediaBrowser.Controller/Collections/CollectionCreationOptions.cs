@@ -28,5 +28,10 @@ namespace MediaBrowser.Controller.Collections
         public IReadOnlyList<string> ItemIdList { get; set; }
 
         public IReadOnlyList<Guid> UserIds { get; set; }
+
+        /// <summary>
+        /// Gets or sets the smart query used for automatically selecting items.
+        /// </summary>
+        public string? SmartQuery { get; set; }
     }
 }
