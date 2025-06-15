@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
+using Jellyfin.Database.Implementations.Entities;
 
 namespace Emby.Server.Implementations.Collections
 {
