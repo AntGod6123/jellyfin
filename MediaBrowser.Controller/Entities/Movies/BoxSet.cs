@@ -50,7 +50,9 @@ namespace MediaBrowser.Controller.Entities.Movies
         /// <summary>
         /// Gets or sets the smart query used to automatically fill this collection.
         /// </summary>
+#nullable enable
         public string? SmartQuery { get; set; }
+#nullable disable
 
         [JsonIgnore]
         private bool IsLegacyBoxSet

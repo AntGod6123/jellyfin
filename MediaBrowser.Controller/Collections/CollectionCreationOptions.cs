@@ -32,6 +32,8 @@ namespace MediaBrowser.Controller.Collections
         /// <summary>
         /// Gets or sets the smart query used for automatically selecting items.
         /// </summary>
+#nullable enable
         public string? SmartQuery { get; set; }
+#nullable disable
     }
 }
