@@ -50,7 +50,8 @@ public class CollectionPostScanTask : ILibraryPostScanTask
 
         foreach (var library in _libraryManager.RootFolder.Children)
         {
-            if (!_libraryManager.GetLibraryOptions(library).AutomaticallyAddToCollection)
+            var options = _libraryManager.GetLibraryOptions(library);
+            if (!options.AutomaticallyAddToCollection || !options.IncludeInGlobalCollections)
             {
                 continue;
             }

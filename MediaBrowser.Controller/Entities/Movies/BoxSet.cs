@@ -47,6 +47,11 @@ namespace MediaBrowser.Controller.Entities.Movies
         /// <value>The display order.</value>
         public string DisplayOrder { get; set; }
 
+        /// <summary>
+        /// Gets or sets the smart query used to automatically fill this collection.
+        /// </summary>
+        public string? SmartQuery { get; set; }
+
         [JsonIgnore]
         private bool IsLegacyBoxSet
         {

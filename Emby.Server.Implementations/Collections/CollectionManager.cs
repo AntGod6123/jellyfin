@@ -157,13 +157,26 @@ namespace Emby.Server.Implementations.Collections
                     Path = path,
                     IsLocked = options.IsLocked,
                     ProviderIds = options.ProviderIds,
+                    SmartQuery = options.SmartQuery,
                     DateCreated = info.CreationTimeUtc,
                     DateModified = info.LastWriteTimeUtc
                 };
 
                 parentFolder.AddChild(collection);
 
-                if (options.ItemIdList.Count > 0)
+                if (!string.IsNullOrWhiteSpace(options.SmartQuery))
+                {
+                    var items = SmartCollectionHelper.ExecuteQuery(options.SmartQuery, null, _libraryManager);
+                    await AddToCollectionAsync(
+                        collection.Id,
+                        items.Select(i => i.Id),
+                        false,
+                        new MetadataRefreshOptions(new DirectoryService(_fileSystem))
+                        {
+                            MetadataRefreshMode = MetadataRefreshMode.FullRefresh
+                        }).ConfigureAwait(false);
+                }
+                else if (options.ItemIdList.Count > 0)
                 {
                     await AddToCollectionAsync(
                         collection.Id,
@@ -171,8 +184,6 @@ namespace Emby.Server.Implementations.Collections
                         false,
                         new MetadataRefreshOptions(new DirectoryService(_fileSystem))
                         {
-                            // The initial adding of items is going to create a local metadata file
-                            // This will cause internet metadata to be skipped as a result
                             MetadataRefreshMode = MetadataRefreshMode.FullRefresh
                         }).ConfigureAwait(false);
                 }
